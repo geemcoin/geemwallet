@@ -1,0 +1,24 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Geem
+GenericName=Geem wallet
+Name[uk]=Geem wallet
+Name[ru]=Geem wallet
+Name[pl]=Geem wallet
+Name[be]=Geem wallet
+Name[de]=Geem wallet
+Name[es]=Geem wallet
+Comment=Geem wallet
+Comment[uk]=Geem wallet
+Comment[ru]=Geem wallet
+Comment[pl]=Geem wallet
+Comment[be]=Geem wallet
+Comment[de]=Geem wallet
+Comment[es]=Geem wallet
+Exec=geem %U
+Terminal=false
+Type=Application
+Icon=geem
+MimeType=x-scheme-handler/geem;
+Categories=Office;Finance;
+Version=2.3.7
