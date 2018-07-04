@@ -27,6 +27,7 @@ Q_DECL_CONSTEXPR char OPTION_RPCNODES[] = "remoteNodes";
 Q_DECL_CONSTEXPR char OPTION_DAEMON_PORT[] = "daemonPort";
 Q_DECL_CONSTEXPR char OPTION_REMOTE_NODE[] = "remoteNode";
 Q_DECL_CONSTEXPR char OPTION_CURRENT_POOL[] = "currentPool";
+const char OPTION_WALLET_THEME[] = "theme";
 
 Settings& Settings::instance() {
   static Settings inst;
@@ -89,7 +90,7 @@ void Settings::load() {
   }
 
   QStringList defaultPoolList;
-  defaultPoolList << "" << "" << "" << "" << "";
+  defaultPoolList << "mine.geemexplorer.com:3332" << "geem.youpool.io:5559" << "minenice.newpool.pw:1168" << "s1.crypto-pool.pro:9018";
   if (!m_settings.contains(OPTION_MINING_POOLS)) {
     setMiningPoolList(QStringList() << defaultPoolList);
   } else {
@@ -103,7 +104,7 @@ void Settings::load() {
   }
 
   QStringList defaultNodesList;
-  defaultNodesList << "seed1.geem.io:2046" << "seed2.geem.io:2046" << "seed3.geem.io:2046" << "seed4.geem.io:2046" << "seed5.geem.io:2046" << "seed6.geem.io:2046";
+  defaultNodesList << "seed2.geem.io:2046" << "seed5.geem.io:2046"; 
   if (!m_settings.contains(OPTION_RPCNODES)) {
     setRpcNodesList(QStringList() << defaultNodesList);
   } else {
@@ -217,6 +218,10 @@ QStringList Settings::getMiningPoolList() const {
     res << m_settings.value(OPTION_MINING_POOLS).toVariant().toStringList();
   }
   return res;
+}
+
+QString Settings::getCurrentTheme() const {
+  return m_settings.contains(OPTION_WALLET_THEME) ? m_settings.value(OPTION_WALLET_THEME).toString() : "light";
 }
 
 QString Settings::getLanguage() const {

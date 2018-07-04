@@ -248,7 +248,7 @@ void StratumClient::processJobNotification(const QJsonObject& _notificationObjec
 void StratumClient::updateJob(const QVariantMap& _newJobMap) {
   QString jobId = _newJobMap.value(STRATUM_JOB_PARAM_NAME_JOB_ID).toString();
   if (jobId.isEmpty()) {
-    qDebug() << "Job did not change.";
+    qDebug() << "Job didn't change";
   } else {
     QWriteLocker lock(&m_jobLock);
     QByteArray blob = QByteArray::fromHex(_newJobMap.value(STRATUM_JOB_PARAM_NAME_JOB_BLOB).toByteArray());

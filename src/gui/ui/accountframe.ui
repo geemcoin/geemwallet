@@ -73,7 +73,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Your Geem Address:</string>
+        <string>Your account:</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
@@ -286,7 +286,7 @@
           </size>
          </property>
          <property name="text">
-          <string> Geem</string>
+          <string> geem</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>

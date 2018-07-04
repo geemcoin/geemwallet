@@ -10,13 +10,17 @@
 #include <QNetworkReply>
 #include <QUrl>
 
-const static QString GEEMCOIN_UPDATE_URL = "http://geem.io/download/update.txt";
+const static QString GEEMCOIN_UPDATE_URL = "https://raw.githubusercontent.com/geemcoin/geemwallet/master/update.txt";
 
 class Updater : public QObject
 {
     Q_OBJECT
 public:
     explicit Updater(QObject *parent = 0);
+
+    ~Updater() {
+        delete manager;
+    }
 
     void checkForUpdate();
 

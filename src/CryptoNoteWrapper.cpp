@@ -1,5 +1,5 @@
 // Copyright (c) 2011-2015 The Cryptonote developers
-// Copyright (c) 2017-2018 The Geem developers
+// Copyright (c) 2016-2017 The Geem developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -86,12 +86,12 @@ inline std::string interpret_rpc_response(bool ok, const std::string& status) {
   std::string err;
   if (ok) {
     if (status == CORE_RPC_STATUS_BUSY) {
-      err = "Daemon is busy. Please try again later";
+      err = "daemon is busy. Please try later";
     } else if (status != CORE_RPC_STATUS_OK) {
       err = status;
     }
   } else {
-    err = "Possibly lost connection to the daemon";
+    err = "possible lost connection to daemon";
   }
   return err;
 }
@@ -213,7 +213,7 @@ public:
         return 0;
       }}
         catch (const CryptoNote::ConnectException&) {
-        qDebug() << "Wallet failed to connect to the daemon.";
+        qDebug() << "Wallet failed to connect to daemon.";
         return 0;
       } catch (const std::exception& e) {
         qDebug() << "Failed to invoke rpc method: " << e.what();
@@ -235,7 +235,7 @@ public:
           return 0;
         }}
           catch (const CryptoNote::ConnectException&) {
-          qDebug() << "Wallet failed to connect to the daemon.";
+          qDebug() << "Wallet failed to connect to daemon.";
           return 0;
         } catch (const std::exception& e) {
           qDebug() << "Failed to invoke rpc method: " << e.what();
@@ -257,7 +257,7 @@ public:
           return 0;
         }}
           catch (const CryptoNote::ConnectException&) {
-          qDebug() << "Wallet failed to connect to the daemon.";
+          qDebug() << "Wallet failed to connect to daemon.";
           return 0;
         } catch (const std::exception& e) {
           qDebug() << "Failed to invoke rpc method: " << e.what();
@@ -279,7 +279,7 @@ public:
           return 0;
         }}
           catch (const CryptoNote::ConnectException&) {
-          qDebug() << "Wallet failed to connect to the daemon.";
+          qDebug() << "Wallet failed to connect to daemon.";
           return 0;
         } catch (const std::exception& e) {
           qDebug() << "Failed to invoke rpc method: " << e.what();
@@ -301,7 +301,7 @@ public:
           return 0;
         }}
           catch (const CryptoNote::ConnectException&) {
-          qDebug() << "Wallet failed to connect to the daemon.";
+          qDebug() << "Wallet failed to connect to daemon.";
           return 0;
         } catch (const std::exception& e) {
           qDebug() << "Failed to invoke rpc method: " << e.what();
@@ -323,7 +323,7 @@ public:
           return 0;
         }}
           catch (const CryptoNote::ConnectException&) {
-          qDebug() << "Wallet failed to connect to the daemon.";
+          qDebug() << "Wallet failed to connect to daemon.";
           return 0;
         } catch (const std::exception& e) {
           qDebug() << "Failed to invoke rpc method: " << e.what();
@@ -345,7 +345,7 @@ public:
           return 0;
         }}
           catch (const CryptoNote::ConnectException&) {
-          qDebug() << "Wallet failed to connect to the daemon.";
+          qDebug() << "Wallet failed to connect to daemon.";
           return 0;
         } catch (const std::exception& e) {
           qDebug() << "Failed to invoke rpc method: " << e.what();
@@ -367,7 +367,7 @@ public:
           return 0;
         }}
           catch (const CryptoNote::ConnectException&) {
-          qDebug() << "Wallet failed to connect to the daemon.";
+          qDebug() << "Wallet failed to connect to daemon.";
           return 0;
         } catch (const std::exception& e) {
           qDebug() << "Failed to invoke rpc method: " << e.what();
@@ -389,7 +389,7 @@ public:
           return 0;
         }}
           catch (const CryptoNote::ConnectException&) {
-          qDebug() << "Wallet failed to connect to the daemon.";
+          qDebug() << "Wallet failed to connect to daemon.";
           return 0;
         } catch (const std::exception& e) {
           qDebug() << "Failed to invoke rpc method: " << e.what();
@@ -435,12 +435,17 @@ public:
     m_nodeServer(m_dispatcher, m_protocolHandler, logManager),
     m_node(m_core, m_protocolHandler) {
 
-    m_core.set_cryptonote_protocol(&m_protocolHandler);
-    m_protocolHandler.set_p2p_endpoint(&m_nodeServer);
-    CryptoNote::Checkpoints checkpoints(logManager);
-    for (const CryptoNote::CheckpointData& checkpoint : CryptoNote::CHECKPOINTS) {
-      checkpoints.add_checkpoint(checkpoint.height, checkpoint.blockId);
-    }
+      CryptoNote::Checkpoints checkpoints(logManager);
+      for (const CryptoNote::CheckpointData& checkpoint : CryptoNote::CHECKPOINTS) {
+        checkpoints.add_checkpoint(checkpoint.height, checkpoint.blockId);
+      }
+      if (!Settings::instance().isTestnet()) {
+        m_core.set_checkpoints(std::move(checkpoints));
+      }
+
+      m_core.set_cryptonote_protocol(&m_protocolHandler);
+      m_protocolHandler.set_p2p_endpoint(&m_nodeServer);
+
   }
 
   ~InprocessNode() override {
