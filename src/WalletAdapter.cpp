@@ -13,10 +13,12 @@
 #include <QVector>
 #include <QDebug>
 
+#include <crypto/crypto.h>
 #include <Common/Base58.h>
 #include <Common/Util.h>
 #include <Wallet/WalletErrors.h>
 #include <Wallet/LegacyKeysImporter.h>
+#include "CryptoNoteCore/CryptoNoteBasic.h"
 
 #include "NodeAdapter.h"
 #include "Settings.h"
@@ -326,6 +328,16 @@ bool WalletAdapter::getAccountKeys(CryptoNote::AccountKeys& _keys) {
   return false;
 }
 
+Crypto::SecretKey WalletAdapter::getTxKey(Crypto::Hash& txid) {
+  Q_CHECK_PTR(m_wallet);
+  try {
+    return m_wallet->getTxKey(txid);
+  } catch (std::system_error&) {
+  }
+
+  return CryptoNote::NULL_SECRET_KEY;
+}
+
 void WalletAdapter::sendTransaction(const QVector<CryptoNote::WalletLegacyTransfer>& _transfers, quint64 _fee, const QString& _paymentId, quint64 _mixin) {
   Q_CHECK_PTR(m_wallet);
   try {
@@ -478,20 +490,20 @@ void WalletAdapter::sendTransactionCompleted(CryptoNote::TransactionId _transact
 QString WalletAdapter::walletErrorMessage(int _error_code) {
   switch (_error_code) {
     case CryptoNote::error::WalletErrorCodes::NOT_INITIALIZED:               return tr("Object was not initialized");
-    case CryptoNote::error::WalletErrorCodes::WRONG_PASSWORD:                return tr("The password is incorrect");
+    case CryptoNote::error::WalletErrorCodes::WRONG_PASSWORD:                return tr("The password is wrong");
     case CryptoNote::error::WalletErrorCodes::ALREADY_INITIALIZED:           return tr("The object is already initialized");
     case CryptoNote::error::WalletErrorCodes::INTERNAL_WALLET_ERROR:         return tr("Internal error occurred");
     case CryptoNote::error::WalletErrorCodes::MIXIN_COUNT_TOO_BIG:           return tr("MixIn count is too big");
     case CryptoNote::error::WalletErrorCodes::BAD_ADDRESS:                   return tr("Bad address");
     case CryptoNote::error::WalletErrorCodes::TRANSACTION_SIZE_TOO_BIG:      return tr("Transaction size is too big");
-    case CryptoNote::error::WalletErrorCodes::WRONG_AMOUNT:                  return tr("Incorrect amount");
+    case CryptoNote::error::WalletErrorCodes::WRONG_AMOUNT:                  return tr("Wrong amount");
     case CryptoNote::error::WalletErrorCodes::SUM_OVERFLOW:                  return tr("Sum overflow");
     case CryptoNote::error::WalletErrorCodes::ZERO_DESTINATION:              return tr("The destination is empty");
     case CryptoNote::error::WalletErrorCodes::TX_CANCEL_IMPOSSIBLE:          return tr("Impossible to cancel transaction");
     case CryptoNote::error::WalletErrorCodes::WRONG_STATE:                   return tr("The wallet is in wrong state (maybe loading or saving), try again later");
     case CryptoNote::error::WalletErrorCodes::OPERATION_CANCELLED:           return tr("The operation you've requested has been cancelled");
     case CryptoNote::error::WalletErrorCodes::TX_TRANSFER_IMPOSSIBLE:        return tr("Transaction transfer impossible");
-    case CryptoNote::error::WalletErrorCodes::WRONG_VERSION:                 return tr("Incorrect version");
+    case CryptoNote::error::WalletErrorCodes::WRONG_VERSION:                 return tr("Wrong version");
     case CryptoNote::error::WalletErrorCodes::FEE_TOO_SMALL:                 return tr("Transaction fee is too small");
     case CryptoNote::error::WalletErrorCodes::KEY_GENERATION_ERROR:          return tr("Cannot generate new key");
     case CryptoNote::error::WalletErrorCodes::INDEX_OUT_OF_RANGE:            return tr("Index is out of range");
@@ -639,7 +651,7 @@ CryptoNote::AccountKeys WalletAdapter::getKeysFromMnemonicSeed(QString& _seed) c
   CryptoNote::AccountKeys keys;
   std::string m_seed_language;
   if(!Crypto::ElectrumWords::words_to_bytes(_seed.toStdString(), keys.spendSecretKey, m_seed_language)) {
-    QMessageBox::critical(nullptr, tr("Mnemonic seed is not correct"), tr("There must be an error in mnemonic seed. Please make sure you entered it correctly."), QMessageBox::Ok);
+    QMessageBox::critical(nullptr, tr("Mnemonic seed is not correct"), tr("There must be an error in mnemonic seed. Make sure you entered it correctly."), QMessageBox::Ok);
   }
   Crypto::secret_key_to_public_key(keys.spendSecretKey,keys.address.spendPublicKey);
   Crypto::SecretKey second;

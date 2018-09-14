@@ -75,7 +75,7 @@ void Updater::replyFinished (QNetworkReply *reply)
     if(reply->error())
     {
         QString error = QString(tr("Error: %1")).arg(reply->errorString());
-        QMessageBox::information(nullptr, tr("Unable to check for an update at this time.."), error, QMessageBox::Ok);
+        QMessageBox::information(nullptr, tr("Unable to check for update"), error, QMessageBox::Ok);
     }
     else
     {
@@ -88,7 +88,7 @@ void Updater::replyFinished (QNetworkReply *reply)
          if (ourVersion < remoteVersion) {
 
              if (QMessageBox::warning(nullptr, QObject::tr("New version available"), QObject::tr("There is update available.\nDo you want to go to download page?"), QMessageBox::Ok, QMessageBox::Cancel) == QMessageBox::Ok) {
-                 QString link = "https://github.com/geemcoin/Wallets/";
+                 QString link = "http://geem.io/downloads/";
                  QDesktopServices::openUrl(QUrl(link));
              }
 

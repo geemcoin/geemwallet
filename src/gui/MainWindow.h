@@ -113,13 +113,14 @@ private:
   Q_SLOT void about();
   Q_SLOT void setStartOnLogin(bool _on);
   Q_SLOT void setMinimizeToTray(bool _on);
-  Q_SLOT void setMiningOnLaunch(bool _on);
   Q_SLOT void setCloseToTray(bool _on);
   Q_SLOT void showPrivateKeys();
   Q_SLOT void DisplayCmdLineHelp();
   Q_SLOT void openConnectionSettings();
   Q_SLOT void exportTrackingKey();
   Q_SLOT void importTrackingKey();
+  Q_SLOT void signMessage();
+  Q_SLOT void verifyMessage();
   Q_SLOT void openRecent();
   Q_SLOT void showStatusInfo();
   Q_SLOT void openLogFile();

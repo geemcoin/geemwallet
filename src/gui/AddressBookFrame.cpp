@@ -68,7 +68,7 @@ void AddressBookFrame::addClicked() {
     QModelIndex contactIndex = AddressBookModel::instance().indexFromContact(label,0);
     QString contactLabel = contactIndex.data(AddressBookModel::ROLE_LABEL).toString();
     if(label == contactLabel) {
-      QCoreApplication::postEvent(&MainWindow::instance(), new ShowMessageEvent(tr("Contact with this label already exists."), QtCriticalMsg));
+      QCoreApplication::postEvent(&MainWindow::instance(), new ShowMessageEvent(tr("Contact with such label already exists."), QtCriticalMsg));
       //label = QString(label + "%1").arg(label.toInt()+1);
       NewAddressDialog dlg(&MainWindow::instance());
       dlg.setEditLabel(label);
@@ -91,7 +91,7 @@ void AddressBookFrame::addClicked() {
         QModelIndex contactIndex = AddressBookModel::instance().indexFromContact(label,0);
         QString contactLabel = contactIndex.data(AddressBookModel::ROLE_LABEL).toString();
         if(label == contactLabel) {
-          QCoreApplication::postEvent(&MainWindow::instance(), new ShowMessageEvent(tr("Contact with this label already exists."), QtCriticalMsg));
+          QCoreApplication::postEvent(&MainWindow::instance(), new ShowMessageEvent(tr("Contact with such label already exists."), QtCriticalMsg));
           return;
         }
         AddressBookModel::instance().addAddress(label, address, paymentid);
@@ -126,7 +126,7 @@ void AddressBookFrame::editClicked() {
      QModelIndex contactIndex = AddressBookModel::instance().indexFromContact(label,0);
      QString contactLabel = contactIndex.data(AddressBookModel::ROLE_LABEL).toString();
      if(label == contactLabel) {
-       QCoreApplication::postEvent(&MainWindow::instance(), new ShowMessageEvent(tr("Contact with this label already exists."), QtCriticalMsg));
+       QCoreApplication::postEvent(&MainWindow::instance(), new ShowMessageEvent(tr("Contact with such label already exists."), QtCriticalMsg));
        return;
      }
 
