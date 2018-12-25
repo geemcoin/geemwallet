@@ -89,7 +89,7 @@ void Settings::load() {
   }
 
   QStringList defaultNodesList;
-  defaultNodesList << "seed5.geem.io:2046";
+  defaultNodesList << "cloud.geem.io:2046";
   if (!m_settings.contains(OPTION_RPCNODES)) {
     setRpcNodesList(QStringList() << defaultNodesList);
   } else {
